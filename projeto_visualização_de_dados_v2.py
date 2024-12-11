@@ -139,98 +139,98 @@ def gerandoHtml():
     # Layout do app
     app.layout = html.Div([
         html.Div([
+          html.Div([
+            html.H2("Desempenho escolar no Brasil", style={"font-family": "Roboto", "color": "#003366"}),
+            html.Nav([
+                dcc.Link("Ranking IDEB", href="#ideb_ranking", style={"text-decoration": "none", "color": "#003366", "font-family": "Roboto", "font-size": "16px", "padding": "10px"}),
+                dcc.Link("Índices", href="#indices", style={"text-decoration": "none", "color": "#003366", "font-family": "Roboto", "font-size": "16px", "padding": "10px"}),
+                dcc.Link("Discrepâncias", href="#ideb_discrepancias", style={"text-decoration": "none", "color": "#003366", "font-family": "Roboto", "font-size": "16px", "padding": "10px"}),
+                dcc.Link("Taxa de Aprovação", href="#taxa_aprovacao", style={"text-decoration": "none", "color": "#003366", "font-family": "Roboto", "font-size": "16px", "padding": "10px"}),
+                dcc.Link("Notas", href="#notas", style={"text-decoration": "none", "color": "#003366", "font-family": "Roboto", "font-size": "16px", "padding": "10px"})
+            ], style={"display": "flex", "gap": "15px", "justify-content": "flex-start", "align-items": "center"})
+          ], style={"max-width": "1200px", "margin": "0 auto"}),
+        ], id='header', style={"background-color": "#f0f0f0", "border-bottom": "2px solid #ddd"}),
+
+
+        html.Div([
+            # Ranking
             html.Div([
-                html.H2("Desempenho escolar no Brasil", style={"font-family": "Roboto", "color": "#003366"}),
-                html.Nav([
-                    dcc.Link("Ranking IDEB", href="#ideb_ranking", style={"text-decoration": "none", "color": "#003366", "font-family": "Roboto", "font-size": "16px", "padding": "10px"}),
-                    dcc.Link("Índices", href="#indices", style={"text-decoration": "none", "color": "#003366", "font-family": "Roboto", "font-size": "16px", "padding": "10px"}),
-                    dcc.Link("Discrepâncias", href="#ideb_discrepancias", style={"text-decoration": "none", "color": "#003366", "font-family": "Roboto", "font-size": "16px", "padding": "10px"}),
-                    dcc.Link("Taxa de Aprovação", href="#taxa_aprovacao", style={"text-decoration": "none", "color": "#003366", "font-family": "Roboto", "font-size": "16px", "padding": "10px"}),
-                    dcc.Link("Notas", href="#notas", style={"text-decoration": "none", "color": "#003366", "font-family": "Roboto", "font-size": "16px", "padding": "10px"})
-                ], style={"display": "flex", "gap": "15px", "justify-content": "flex-start", "align-items": "center"})
-            ], id='header', style={"padding": "10px", "background-color": "#f0f0f0", "border-bottom": "2px solid #ddd"}),
+                html.H4("Ranking IDEB por estado"),
+                html.Div([
+                  dcc.RadioItems(
+                      id="ranking_nivel_de_ensino",
+                      options=[
+                          {"label": "Fundamental Anos Iniciais", "value": "Anos Iniciais"},
+                          {"label": "Fundamental Anos Finais", "value": "Anos Finais"},
+                          {"label": "Ensino Médio", "value": "Ensino Médio"},
+                      ],
+                      value="Anos Iniciais",
+                      inline=True,
+                      style={"margin-right": "20px"}
+                  ),
+                  dcc.Dropdown(
+                      id="estado_destaque",
+                      placeholder="Escolha um estado para destacar",
+                      clearable=True,
+                      style={"width": "300px"}
+                  ),
+                ], style={"display": "flex", "align-items": "center", "gap": "10px", "margin-bottom": "10px"}, id="ranking"),
+                dcc.Graph(id="grafico_barra"),
+            ], id='ideb_ranking', style=styleDict),
 
-
+            # indices
             html.Div([
-                # Ranking
-                html.Div([
-                    html.H4("Ranking IDEB por estado"),
-                    html.Div([
-                      dcc.RadioItems(
-                          id="ranking_nivel_de_ensino",
-                          options=[
-                              {"label": "Fundamental Anos Iniciais", "value": "Anos Iniciais"},
-                              {"label": "Fundamental Anos Finais", "value": "Anos Finais"},
-                              {"label": "Ensino Médio", "value": "Ensino Médio"},
-                          ],
-                          value="Anos Iniciais",
-                          inline=True,
-                          style={"margin-right": "20px"}
-                      ),
-                      dcc.Dropdown(
-                          id="estado_destaque",
-                          placeholder="Escolha um estado para destacar",
-                          clearable=True,
-                          style={"width": "300px"}
-                      ),
-                    ], style={"display": "flex", "align-items": "center", "gap": "10px", "margin-bottom": "10px"}, id="ranking"),
-                    dcc.Graph(id="grafico_barra"),
-                ], id='ideb_ranking', style=styleDict),
+                html.H4("Evolução do Índice Observado e Projetado por Nível de Ensino"),
+                dcc.RadioItems(
+                    id="nivel_de_ensino",
+                    options=[
+                        {"label": "Fundamental Anos Iniciais", "value": "Anos Iniciais"},
+                        {"label": "Fundamental Anos Finais", "value": "Anos Finais"},
+                        {"label": "Ensino Médio", "value": "Ensino Médio"},
+                    ],
+                    value="Anos Iniciais",
+                    inline=True,
+                    style={"margin-bottom": "10px"}
+                ),
+                dcc.Graph(id="mapa")
+            ],id = 'indices', style=styleDict),
 
-                # indices
-                html.Div([
-                    html.H4("Evolução do Índice Observado e Projetado por Nível de Ensino"),
-                    dcc.RadioItems(
-                        id="nivel_de_ensino",
-                        options=[
-                            {"label": "Fundamental Anos Iniciais", "value": "Anos Iniciais"},
-                            {"label": "Fundamental Anos Finais", "value": "Anos Finais"},
-                            {"label": "Ensino Médio", "value": "Ensino Médio"},
-                        ],
-                        value="Anos Iniciais",
-                        inline=True,
-                        style={"margin-bottom": "10px"}
-                    ),
-                    dcc.Graph(id="mapa")
-                ],id = 'indices', style=styleDict),
+            # Mapas discrepancia
+            html.Div([
+                html.H4("Mapa de Discrepâncias por Nível de Ensino"),
+                dcc.Graph(id="mapas_discrepancias")
+            ],id = 'ideb_discrepancias', style=styleDict),
 
-                # Mapas discrepancia
-                html.Div([
-                    html.H4("Mapa de Discrepâncias por Nível de Ensino"),
-                    dcc.Graph(id="mapas_discrepancias")
-                ],id = 'ideb_discrepancias', style=styleDict),
+            # Taxa de aprovação
+            html.Div([
+                html.H4("Taxa de Aprovação por Estado e Ano"),
+                html.Label("Selecione um Estado:"),
+                dcc.Dropdown(
+                    id="estado-dropdown",
+                    options=[{"label": estado, "value": estado} for estado in estados],
+                    value=estados[0],  # Valor inicial
+                    style={"width": "50%"}
+                ),
+                dcc.Graph(id="grafico-aprovacao"),
+            ], style=styleDict),
 
-                # Taxa de aprovação
-                html.Div([
-                    html.H4("Taxa de Aprovação por Estado e Ano"),
-                    html.Label("Selecione um Estado:"),
-                    dcc.Dropdown(
-                        id="estado-dropdown",
-                        options=[{"label": estado, "value": estado} for estado in estados],
-                        value=estados[0],  # Valor inicial
-                        style={"width": "50%"}
-                    ),
-                    dcc.Graph(id="grafico-aprovacao"),
-                ], style=styleDict),
-
-                # Notas
-                html.Div([
-                    html.H4("Evolução das Notas por Nível de Ensino"),
-                    dcc.RadioItems(
-                        id="notas_nivel_de_ensino",
-                        options=[
-                            {"label": "Fundamental Anos Iniciais", "value": "Anos Iniciais"},
-                            {"label": "Fundamental Anos Finais", "value": "Anos Finais"},
-                            {"label": "Ensino Médio", "value": "Ensino Médio"},
-                        ],
-                        value="Anos Iniciais",
-                        inline=True,
-                        style={"margin-bottom": "10px"}
-                    ),
-                    dcc.Graph(id="notas_mapa")
-                ], style=styleDict)
-            ], id='graphics')
-        ], style={"max-width": "1200px", "margin": "0 auto", "padding": "20px", "font-family": "Roboto", "color": "#333"})
+            # Notas
+            html.Div([
+                html.H4("Evolução das Notas por Nível de Ensino"),
+                dcc.RadioItems(
+                    id="notas_nivel_de_ensino",
+                    options=[
+                        {"label": "Fundamental Anos Iniciais", "value": "Anos Iniciais"},
+                        {"label": "Fundamental Anos Finais", "value": "Anos Finais"},
+                        {"label": "Ensino Médio", "value": "Ensino Médio"},
+                    ],
+                    value="Anos Iniciais",
+                    inline=True,
+                    style={"margin-bottom": "10px"}
+                ),
+                dcc.Graph(id="notas_mapa")
+            ], style=styleDict)
+        ], id='graphics', style={"max-width": "1200px", "margin": "0 auto", "padding": "0px", "font-family": "Roboto", "color": "#333"})
     ])
 
 # Ranking
@@ -284,6 +284,8 @@ def graficoRanking():
         )
 
         fig.update_layout(
+            width=None,
+            margin={"r":0,"t":0,"l":0,"b":0},
             height=720,  # Ajuste da altura
             bargap=0.01,  # Diminui o espaço entre as barras
             yaxis=dict(
@@ -330,7 +332,9 @@ def graficoIDEB():
         )
 
         fig.update_layout(
-            margin={"r": 0, "t": 50, "l": 0, "b": 0}
+            width=None,
+            height=600,
+            margin={"r":0,"t":0,"l":0,"b":0},
         )
 
         fig.add_shape(
@@ -380,8 +384,8 @@ def graficoDiscrepancia():
             labels={"DISCREPANCIA": "Discrepância"},
             facet_col="NIVEL",
             facet_col_wrap=3,
-            facet_col_spacing=0.01,
-            facet_row_spacing=0.01,
+            facet_col_spacing=0.001,
+            facet_row_spacing=0.001,
             category_orders={"NIVEL": ["Anos Iniciais", "Anos Finais", "Ensino Médio"]},
             hover_data={"DISCREPANCIA": True, "NIVEL": False, "Ano": False, "UNIDGEO": False},
         )
@@ -396,6 +400,9 @@ def graficoDiscrepancia():
         )
         # Personalizar a barra de legenda (colorbar) acima do gráfico
         fig.update_layout(
+            width=None,
+            height=600,
+            margin={"r":0,"t":0,"l":0,"b":0},
             coloraxis_colorbar=dict(
                 orientation="h",  # Mantém a orientação horizontal
                 x=0.5,  # Centraliza horizontalmente
@@ -433,7 +440,13 @@ def graficoTaxaAprovacao():
             labels={"APROVACAO": "Taxa de Aprovação (%)", "Ano": "Ano", "NIVEL": "Nível"},
             range_y=[60,100]
         )
-        fig.update_layout(height=500, margin={"r": 0, "t": 50, "l": 0, "b": 0})
+
+        fig.update_layout(
+            width=None,
+            height=600,
+            margin={"r":0,"t":0,"l":0,"b":0}
+        )
+
         return fig
 
 # Notas de português e matemática
@@ -471,6 +484,12 @@ def graficoNotas():
             visible=False
         )
 
+        fig.update_layout(
+            width=None,
+            height=600,
+            margin={"r":0,"t":0,"l":0,"b":0}
+        )
+
         return fig
 
 # Executar o servidor
@@ -484,4 +503,4 @@ graficoTaxaAprovacao()
 graficoNotas()
 
 if __name__ == "__main__":
-    app.run_server(debug=True, port=8053)
+    app.run_server(debug=True)
