@@ -142,15 +142,7 @@ def gerandoHtml():
     app.layout = html.Div([
         html.Div([
           html.Div([
-            html.H2("Desempenho escolar no Brasil", style={"font-family": "Roboto", "color": "#003366"}),
-            html.Nav([
-                dcc.Link("Sobre", href="#sobre", style=headerStyle),
-                dcc.Link("Ranking IDEB", href="#ideb_ranking", style=headerStyle),
-                dcc.Link("Índices", href="#indices", style=headerStyle),
-                dcc.Link("Discrepâncias", href="#ideb_discrepancias", style=headerStyle),
-                dcc.Link("Taxa de Aprovação", href="#taxa_aprovacao", style=headerStyle),
-                dcc.Link("Notas", href="#notas", style=headerStyle)
-            ], style={"display": "flex", "gap": "15px", "justify-content": "flex-start", "align-items": "center"})
+            html.H2("Desempenho escolar no Brasil", style={"font-family": "Roboto", "color": "#003366"})
           ], style={"max-width": "1200px", "margin": "0 auto"}),
         ], id='header', style={"border-bottom": "2px solid #ddd"}),
 
@@ -501,7 +493,7 @@ def graficoNotas():
             color_continuous_scale="RdBu",
             range_color=[nota_min, nota_max],
             labels={"SOMA_NOTAS": "Matemática + Português"},
-            title="Mapa das Notas por Nível de Ensino"
+            hover_data={"SOMA_NOTAS": True, "Ano": False, "UNIDGEO": False},
         )
 
         # Ajustar o layout do mapa
