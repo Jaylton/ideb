@@ -134,6 +134,8 @@ estados = sorted(Aprovacao["UNIDGEO"].unique())
 
 anos = sorted(Notas["Ano"].unique())
 
+headerStyle = {"text-decoration": "none", "color": "#003366", "font-family": "Roboto", "font-size": "16px", "padding": "10px"}
+
 # Gerando página HTML
 def gerandoHtml():
     # Layout do app
@@ -142,20 +144,33 @@ def gerandoHtml():
           html.Div([
             html.H2("Desempenho escolar no Brasil", style={"font-family": "Roboto", "color": "#003366"}),
             html.Nav([
-                dcc.Link("Ranking IDEB", href="#ideb_ranking", style={"text-decoration": "none", "color": "#003366", "font-family": "Roboto", "font-size": "16px", "padding": "10px"}),
-                dcc.Link("Índices", href="#indices", style={"text-decoration": "none", "color": "#003366", "font-family": "Roboto", "font-size": "16px", "padding": "10px"}),
-                dcc.Link("Discrepâncias", href="#ideb_discrepancias", style={"text-decoration": "none", "color": "#003366", "font-family": "Roboto", "font-size": "16px", "padding": "10px"}),
-                dcc.Link("Taxa de Aprovação", href="#taxa_aprovacao", style={"text-decoration": "none", "color": "#003366", "font-family": "Roboto", "font-size": "16px", "padding": "10px"}),
-                dcc.Link("Notas", href="#notas", style={"text-decoration": "none", "color": "#003366", "font-family": "Roboto", "font-size": "16px", "padding": "10px"})
+                dcc.Link("Sobre", href="#sobre", style=headerStyle),
+                dcc.Link("Ranking IDEB", href="#ideb_ranking", style=headerStyle),
+                dcc.Link("Índices", href="#indices", style=headerStyle),
+                dcc.Link("Discrepâncias", href="#ideb_discrepancias", style=headerStyle),
+                dcc.Link("Taxa de Aprovação", href="#taxa_aprovacao", style=headerStyle),
+                dcc.Link("Notas", href="#notas", style=headerStyle)
             ], style={"display": "flex", "gap": "15px", "justify-content": "flex-start", "align-items": "center"})
           ], style={"max-width": "1200px", "margin": "0 auto"}),
-        ], id='header', style={"background-color": "#f0f0f0", "border-bottom": "2px solid #ddd"}),
+        ], id='header', style={"border-bottom": "2px solid #ddd"}),
 
 
         html.Div([
+            # Sobre o IDEB
+            html.Div([
+                html.H4("Ideb - Índice de Desenvolvimento da Educação Básica"),
+                html.P("O Ideb, criado pelo Inep (Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira), tem como objetivo medir a qualidade do aprendizado no Brasil e estabelecer metas para a melhoria do ensino."),
+                html.P("Calculado a cada dois anos, desde 2007, o índice considera a taxa de aprovação e o desempenho no Saeb (Sistema de Avaliação da Educação Básica), em Língua Portuguesa e Matemática."),
+                html.P("Cada nível de ensino possui um Ideb específico, que varia conforme as etapas educacionais: fundamental inicial (1º ao 5º ano), fundamental final (6º ao 9º ano) e ensino médio, refletindo as particularidades de cada uma dessas fases. Além disso, cada estado brasileiro possui índices e metas bem definidos."),
+                html.P("Esta página disponibiliza um portal interativo para explorar os dados do Ideb, organizados por nível de ensino e estado, com visualizações dinâmicas.")
+            ], id='sobre', style=styleDict),
+
+
             # Ranking
             html.Div([
                 html.H4("Ranking IDEB por estado"),
+                html.P("Você sabia que todos os estados brasileiros têm registrado melhorias no Ideb ao longo dos anos?"),
+                html.P("O ranking a seguir exibe o progresso dos estados. Aproxime o ponteiro do mouse das barras para ver a posição e o Ideb do estado. Use a linha do tempo para ver a evolução durante os anos. Você também pode escolher um estado para destacar."),
                 html.Div([
                   dcc.RadioItems(
                       id="ranking_nivel_de_ensino",
@@ -176,11 +191,14 @@ def gerandoHtml():
                   ),
                 ], style={"display": "flex", "align-items": "center", "gap": "10px", "margin-bottom": "10px"}, id="ranking"),
                 dcc.Graph(id="grafico_barra"),
+                html.P("O ranking não tem como objetivo promover uma disputa entre os estados, mas sim alertar gestores educacionais e a sociedade para as particularidades de cada local. Identificar essas diferenças é essencial para buscar soluções e promover melhorias.")
             ], id='ideb_ranking', style=styleDict),
 
             # indices
             html.Div([
                 html.H4("Evolução do Índice Observado e Projetado por Nível de Ensino"),
+                html.P("As metas são fundamentais para direcionar objetivos. Na educação, o aumento das notas e das aprovações indica melhoria no aprendizado, refletido no crescimento do Ideb ao longo dos anos. Por isso, o MEC estabeleceu metas progressivas para escolas e estados."),
+                html.P("O gráfico de dispersão mostra os estados com base no índice projetado e observado. Acima da linha tracejada é possível ver os estados que superaram a meta, enquanto aqueles abaixo dessa linha não atingiram o índice projetado."),
                 dcc.RadioItems(
                     id="nivel_de_ensino",
                     options=[
@@ -198,12 +216,17 @@ def gerandoHtml():
             # Mapas discrepancia
             html.Div([
                 html.H4("Mapa de Discrepâncias por Nível de Ensino"),
+                html.P("A discrepância é a diferença entre o índice observado e o projetado. Valores negativos indicam que a meta não foi atingida, enquanto valores positivos indicam que a meta foi superada."),
+                html.P("Por meio de três mapas interativos, é possível explorar as discrepâncias em níveis educacionais distintos: anos iniciais, anos finais e ensino médio. Foram utilizados tons de vermelho para discrepâncias negativas e azul para positivas."),
+                html.P("A linha do tempo permite acompanhar a evolução dessas discrepâncias ao longo dos anos e o zoom pode ser ajustado para uma visualização detalhada."),
                 dcc.Graph(id="mapas_discrepancias")
             ],id = 'ideb_discrepancias', style=styleDict),
 
             # Taxa de aprovação
             html.Div([
                 html.H4("Taxa de Aprovação por Estado e Ano"),
+                html.P("O gráfico de linhas exibe a taxa de aprovação ao longo do tempo para três níveis de ensino: anos iniciais, anos finais e ensino médio. O eixo X representa os anos, enquanto o eixo Y mostra a taxa de aprovação em cada nível."),
+                html.P("É possível escolher um estado na caixa de seleção para visualizar os dados específicos dessa região. Ao clicar nos itens da legenda, a linha correspondente desaparece ou aparece, permitindo uma visualização mais detalhada de cada nível de ensino."),
                 html.Label("Selecione um Estado:"),
                 dcc.Dropdown(
                     id="estado-dropdown",
@@ -217,6 +240,9 @@ def gerandoHtml():
             # Notas
             html.Div([
                 html.H4("Evolução das Notas por Nível de Ensino"),
+                html.P("O mapa interativo exibe as notas dos estados brasileiros, com base na soma das pontuações de Língua Portuguesa e Matemática no Saeb. É possível visualizar os dados de acordo com três níveis de ensino: anos iniciais, anos finais e ensino médio."),
+                html.P("Ao escolher um nível de ensino, cada estado recebe uma cor atribuída ao valor da soma das notas. Valores vermelhos indicam notas mais baixas, enquanto valores azuis correspondem a notas mais altas."),
+                html.P("A linha do tempo permite observar a evolução das notas ao longo dos anos, e o zoom pode ser ajustado para uma visualização mais detalhada."),
                 dcc.RadioItems(
                     id="notas_nivel_de_ensino",
                     options=[
